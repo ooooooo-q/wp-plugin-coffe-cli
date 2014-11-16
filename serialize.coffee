@@ -1,7 +1,7 @@
 
-#
+# phpjsはオブジェクトのserializeに対応していないため
 
-toSendSerialie = (hash)->
+to_serialize = (hash)->
   str = to_serialize_hash hash
   "O:8:\"stdClass\":#{str}"
 
@@ -23,4 +23,4 @@ to_serailize = (value)->
     when 'boolen' then if value then "b:1" else "b:0"
 
 
-module.exports = toSendSerialie
+module.exports = to_serialize

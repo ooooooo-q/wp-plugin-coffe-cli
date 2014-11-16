@@ -1,25 +1,19 @@
 requester = require 'superagent'
+PHPUnserialize = require 'php-unserialize'
 
 serialize = require './serialize'
 
-api_call = (action, body)->
+exports.send = (action, body, callback)->
 
   data =
     'action' : action
     'request' : serialize body
 
-  console.log data
-
   requester.post("https://api.wordpress.org/plugins/info/1.0/")
     .type 'form'
     .send( data )
     .end (res)->
-      console.log res.text
 
-action = "query_plugins"
-request =
-  search : "seo"
-  per_page: 10
-
-
-api_call(action,request)
+      modified = res.text.replace /O:8:"stdClass"/g, 'a'
+      result = PHPUnserialize.unserialize modified
+      callback(result)
